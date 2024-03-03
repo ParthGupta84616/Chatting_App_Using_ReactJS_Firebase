@@ -1,0 +1,64 @@
+import React from 'react';
+
+function Input() {
+  return (
+    <div className='absolute bottom-0'>
+    <div className="flex space-x-4 w-full bg-white  p-2 rounded-xl ">
+      {/* Text Input */}
+      <div className="input">
+        <input
+          type="text"
+          placeholder='Enter Your Text'
+          className="border border-gray-300 rounded-md px-4 py-2 h-14 text-black text-xl focus:outline-none focus:border-blue-500"
+          style={{width:"37vw"}}
+        />
+      </div>
+      
+      {/* File Input */}
+      <div className="input relative">
+        <input
+          type="file"
+          id="fileInput"
+          className="hidden "
+        />
+        <label
+          htmlFor="fileInput"
+          className="cursor-pointer "
+        >
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACTUlEQVR4nO2Yu2tUQRTGf4pG4hYxaJFEAr5ANIhNglik10YMKNrY2wkWVlaCpSD4BwiBaGlhpyRaiEoMpLBQEZ8IGvCB+IjvkQPfwrBslru5M7N7w3wwzN4zZ75zPubcuzMDGdWCi9QeAYMrQYgDHgNDqYWEhC/mCbA5KHsHhMynFOMiCtkAzOr3C2BL4DhNg8biNDH39fwS2Bo4VtOgsTj7gHuyvQK2BY7XNGgsThNz1xOzvapCDDXglsZeAztSBI3FWQNmNP4W2J0iaCzO9cC0fN6FEtMJIXUxNz0xI1RUiKEXuCHfBWAPXbxFaacthAgaEmU2ml0lpCN5uCwkLFxekYSldRS4DByp8oqMAf8Uw/rRqgo53PB5PRQrj3YJVgPXgKfAQAH/tcBV4AtwBVgTKI/SBGe9OTMSFgIupZBx4DfwF/ikeWcafI4B74HjEfMoRdCvM7f5ngcO6OU1YfvlY6e+z/JZBPZFyKMUwSrguvzueHV+QbZnwCbggbctt/5NG7eNLoWQ0/L5AAx79h5gzjvtWf9com7r2S4d1nWDkFHgp8rIPqWN8MvJL7ONWimzTwbIoxRBn5fMxRYcJ+TzDdjl2fcCXzV2qkQehdCKYEpjcwXKY1K+D3Xyq2NCq/kHOLjMPAphKYKTstsf2c4CPDXdvtucSw1j52T/2OIKKIoQuwn8LvsvJVCkLXp7qmb2+uomE2KXAD9KHlmXatMphaA67w/UekrkURj5qBsYLq+IkEsrMFwuLSGXVmC4XFqC67K2bKwYIRkkxn8X7NPmzR/WMQAAAABJRU5ErkJggg=="
+            alt="Upload"
+            className="w-8 h-8 mt-2"
+          />
+        </label>
+      </div>
+
+      {/* Image Input */}
+      <div className="input relative">
+        <input
+          type="file"
+          id="imageInput"
+          className="hidden"
+        />
+        <label
+          htmlFor="imageInput"
+          className="cursor-pointer"
+        >
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACR0lEQVR4nO2YX4hPQRTHP0ho5d+SfyVLWItS9ldevaw88OJVKQ+U4k1SyJvyYNuilDzIg8KbWlL+tEmKIkVK8mfTrpIU8YLR1PfWdLvpZ52Ze3ebb013zj1zz5nvzJmZOwcyxhdcpHIdmDYRiDhgEJiemoglQjJ3gZmm1msgMqrnHaDD2EdSImuAYdXvA7OM/VQ6jWVzOfBa8mOg09hXpdNYNpcBr/TuCTDf2F+l01g2FwHP9f4FsHi8EvFYCDyT7iWwNIXTWDbnAY+kfwN0pXAay+Yc4KHavANWpnAay+Zs4IHavQdWpXAay2YHcDs4PNencDoWm/9aPlo4tcT//Gg2ikgt/XCZiC1cnhEhh5YxXA6tNkdiLXAcGACOAFsq2uwALgKndZEK4ZMPe4ELQP9frrzRZ2RPxaHlO1Rgf0k3AiyQbi7wNNB9A6bUTeQM0BMkFDYDU/Vb8QNoAVekO6xvz0v2P4cb9D1NIOJxUrJ/blX9pnSFPATMEMHfQLdBP8yJ7JJ8LQirQrc6uGO0VP9g1A9zIjsl3wCOqX4qSDJ4+RPQFyQbGklkn+TLwIGSrluyTzJsCmankUTOSfZb8fYgx+uxTfIt5a/8+vjV5r3cpSTiR/kL8BNYoQX9Ffgu3dXSrlXc/u4BG5V5pCnniB/hg4H+REn/VskFj3VaL4Xuc51EeoGzmpFDGtkQk4DdwCVtyeXE2xLgqE52vylMrotIKrhMRMgzYgyXQ0vIoWUMl0NLyKFlDJdDyyBzHqOMGROGSAaJ8QfHG8OPWAuI/wAAAABJRU5ErkJggg=="
+            alt="Select Image"
+            className="w-8 h-8 mt-2"
+          />
+        </label>
+      </div>
+
+      {/* Send Button */}
+      <div className="sen">
+        <button className="bg-blue-500 h-14 w-20 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Send</button>
+      </div>
+      </div>
+    </div>
+  );
+}
+
+export default Input;
