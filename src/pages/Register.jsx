@@ -1,32 +1,65 @@
+
 import add from "../imgaes/Picture.png"
 import React from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-
-import { auth } from '../firebase'; 
-
-
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
+import { storage, db } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 function Register() {
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const name = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
-    const displayPicture = e.target[3].files[0]; 
+    const displayPicture = e.target[3].files[0];
 
-    const auth = getAuth(); 
+    const auth = getAuth();
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error("Registration error:", errorMessage);
-      });
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      const storageRef = ref(storage, name);
+
+      const uploadTask = uploadBytesResumable(storageRef, displayPicture);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          }
+        },
+        (error) => {
+          console.error('Upload error:', error);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          await updateProfile(user, {
+            displayName: name,
+            photoURL: downloadURL,
+          });
+          await setDoc(doc(db, 'user', user.uid), {
+            uid: user.uid,
+            name,
+            photoURL: downloadURL,
+            email,
+          });
+          await setDoc(doc(db, 'userChats', user.uid), {})
+        }
+      );
+    } catch (error) {
+      console.error('Registration error:', error.message);
+    }
   };
-  
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
