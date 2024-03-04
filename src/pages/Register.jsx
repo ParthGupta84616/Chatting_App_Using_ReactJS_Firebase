@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
 import { storage, db } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate
 
 function Register() {
   const navigate = useNavigate(); // Initialize useNavigate hook
@@ -121,7 +121,7 @@ function Register() {
           >
             Sign Up
           </button>
-          <p className="text-white mt-4">Already Have An Account? Login!</p>
+          <p className="text-white mt-4">Already Have An Account? <Link to="/login">Login!</Link></p>
         </form>
       </div>
     </div>
