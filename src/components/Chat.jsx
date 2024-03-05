@@ -1,8 +1,10 @@
-import React from 'react';
+import React ,{useContext} from 'react';
 import Messages from './Messages';
 import Input from './Input';
+import { ChatContext } from '../Context/ChatContext';
 
 function Chat() {
+  const {data}=useContext(ChatContext)
   return (
     <div className='bg-blue-300 rounded-2xl w-2/3 h-full relative'>
       <div className="nav flex items-center justify-between p-4 bg-gray-600 rounded-xl">
@@ -10,13 +12,13 @@ function Chat() {
         <div className="flex items-center">
           <div className="img">
             <img
-            src="https://th.bing.com/th?id=ORMS.8ffbda0a4d3dd77c25111cd220429d7f&pid=Wdp&w=612&h=304&qlt=90&c=1&rs=1&dpr=1.25&p=0" // Replace with the correct path to your avatar image
+            src= {data.user?.photoURL}
             alt="Avatar"
             className="w-16 h-16 rounded-full"
           />
           </div>
           <div className="user ml-2">
-            <h1 className="text-white text-xl"><strong>Username</strong></h1>
+            <h1 className="text-white text-xl"><strong>{data.user?.name}</strong></h1>
           </div>
         </div>
 

@@ -1,28 +1,33 @@
-import React, { useRef, useEffect } from 'react';
-import Message from './Message';
+import { doc, onSnapshot } from "firebase/firestore";
+import React, { useContext, useEffect, useState } from "react";
+import { db } from "../firebase";
+import Message from "./Message";
+import { ChatContext } from "../Context/ChatContext";
 
-function Messages() {
-  const messagesEndRef = useRef(null);
-  const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
+const Messages = () => {
+  const [messages, setMessages] = useState([]);
+  const { data } = useContext(ChatContext);
+
   useEffect(() => {
-    scrollToBottom();
-  }, []);
-  const addNewMessage = () => {
-    scrollToBottom();
-  };
+    const unSub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
+      doc.exists() && setMessages(doc.data().messages);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, [data.chatId]);
+
+  console.log(messages);
+
   return (
     <div className="messages-container" style={{ maxHeight: '51vh', overflowY: 'auto' }}>
       <div className="messages">
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <div ref={messagesEndRef} />
-      </div>
+        {messages.map((message) => (
+          <Message message={message} key={message.id} />
+        ))}
+        {/* You may need to define messagesEndRef if it's required */}
+        </div>
     </div>
   );
 }

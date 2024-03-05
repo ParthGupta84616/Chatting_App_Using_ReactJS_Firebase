@@ -1,29 +1,103 @@
-import React from 'react';
+import React, { useContext, useState } from "react";
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db, storage } from "../firebase";
+import { v4 as uuid } from "uuid";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { AuthContext } from "../Context/AuthContext";
+import { ChatContext } from "../Context/ChatContext";
 
-function Input() {
+const Input = () => {
+  const [text, setText] = useState("");
+  const [img, setImg] = useState(null);
+
+  const { currentUser } = useContext(AuthContext);
+  const { data } = useContext(ChatContext);
+
+  const handleSend = async () => {
+    if (img) {
+      const storageRef = ref(storage, uuid());
+
+      const uploadTask = uploadBytesResumable(storageRef, img);
+
+      uploadTask.on(
+        (error) => {
+          //TODO:Handle Error
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            await updateDoc(doc(db, "chats", data.chatId), {
+              messages: arrayUnion({
+                id: uuid(),
+                text,
+                senderId: currentUser.uid,
+                date: Timestamp.now(),
+                img: downloadURL,
+              }),
+            });
+          });
+        }
+      );
+    } else {
+      await updateDoc(doc(db, "chats", data.chatId), {
+        messages: arrayUnion({
+          id: uuid(),
+          text,
+          senderId: currentUser.uid,
+          date: Timestamp.now(),
+        }),
+      });
+    }
+
+    await updateDoc(doc(db, "userChats", currentUser.uid), {
+      [data.chatId + ".lastMessage"]: {
+        text,
+      },
+      [data.chatId + ".date"]: serverTimestamp(),
+    });
+
+    await updateDoc(doc(db, "userChats", data.user.uid), {
+      [data.chatId + ".lastMessage"]: {
+        text,
+      },
+      [data.chatId + ".date"]: serverTimestamp(),
+    });
+
+    setText("");
+    setImg(null);
+  };
+  
   return (
     <div className='absolute bottom-0'>
-    <div className="flex space-x-4 w-full bg-white  p-2 rounded-xl ">
+    <div className="flex space-x-4 w-full bg-white p-2 rounded-xl">
       {/* Text Input */}
       <div className="input">
         <input
+          onChange={e => setText(e.target.value)}
           type="text"
           placeholder='Enter Your Text'
           className="border border-gray-300 rounded-md px-4 py-2 h-14 text-black text-xl focus:outline-none focus:border-blue-500"
-          style={{width:"37vw"}}
+          style={{ width: "37vw" }}
+          value={text}
         />
       </div>
-      
+
       {/* File Input */}
       <div className="input relative">
         <input
           type="file"
           id="fileInput"
-          className="hidden "
+          onChange={e => setImg(e.target.files[0])}
+          className="hidden"
         />
         <label
           htmlFor="fileInput"
-          className="cursor-pointer "
+          className="cursor-pointer"
         >
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACTUlEQVR4nO2Yu2tUQRTGf4pG4hYxaJFEAr5ANIhNglik10YMKNrY2wkWVlaCpSD4BwiBaGlhpyRaiEoMpLBQEZ8IGvCB+IjvkQPfwrBslru5M7N7w3wwzN4zZ75zPubcuzMDGdWCi9QeAYMrQYgDHgNDqYWEhC/mCbA5KHsHhMynFOMiCtkAzOr3C2BL4DhNg8biNDH39fwS2Bo4VtOgsTj7gHuyvQK2BY7XNGgsThNz1xOzvapCDDXglsZeAztSBI3FWQNmNP4W2J0iaCzO9cC0fN6FEtMJIXUxNz0xI1RUiKEXuCHfBWAPXbxFaacthAgaEmU2ml0lpCN5uCwkLFxekYSldRS4DByp8oqMAf8Uw/rRqgo53PB5PRQrj3YJVgPXgKfAQAH/tcBV4AtwBVgTKI/SBGe9OTMSFgIupZBx4DfwF/ikeWcafI4B74HjEfMoRdCvM7f5ngcO6OU1YfvlY6e+z/JZBPZFyKMUwSrguvzueHV+QbZnwCbggbctt/5NG7eNLoWQ0/L5AAx79h5gzjvtWf9com7r2S4d1nWDkFHgp8rIPqWN8MvJL7ONWimzTwbIoxRBn5fMxRYcJ+TzDdjl2fcCXzV2qkQehdCKYEpjcwXKY1K+D3Xyq2NCq/kHOLjMPAphKYKTstsf2c4CPDXdvtucSw1j52T/2OIKKIoQuwn8LvsvJVCkLXp7qmb2+uomE2KXAD9KHlmXatMphaA67w/UekrkURj5qBsYLq+IkEsrMFwuLSGXVmC4XFqC67K2bKwYIRkkxn8X7NPmzR/WMQAAAABJRU5ErkJggg=="
@@ -38,6 +112,7 @@ function Input() {
         <input
           type="file"
           id="imageInput"
+          onChange={e => setImg(e.target.files[0])}
           className="hidden"
         />
         <label
@@ -54,11 +129,11 @@ function Input() {
 
       {/* Send Button */}
       <div className="sen">
-        <button className="bg-blue-500 h-14 w-20 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Send</button>
-      </div>
+        <button onClick={handleSend} className="bg-blue-500 h-14 w-20 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Send</button>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default Input;
