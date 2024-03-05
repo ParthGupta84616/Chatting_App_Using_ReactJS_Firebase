@@ -26,7 +26,6 @@ const Messages = () => {
         {messages.map((message) => (
           <Message message={message} key={message.id} />
         ))}
-        {/* You may need to define messagesEndRef if it's required */}
         </div>
     </div>
   );
