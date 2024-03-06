@@ -7,7 +7,7 @@ function Message({ message }) {
   const { data } = useContext(ChatContext);
 
   const bgWidth = `${message?.text?.length * 10 + 250}px`; 
-  let t = message.date.seconds
+  let t = message.date.seconds+19800
   const secondsSinceEpoch = t; 
   const hours = Math.floor(secondsSinceEpoch / 3600) % 24; 
   const minutes = Math.floor((secondsSinceEpoch % 3600) / 60);
