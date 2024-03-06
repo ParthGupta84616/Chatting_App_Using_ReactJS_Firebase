@@ -35,8 +35,15 @@ function Message({ message }) {
             </h1>
           </div>
           <div className="message">
-            <p>{message?.text}</p> 
-          </div>
+  {/* Check if message.img exists and render it */}
+  {message.img && <img
+  className='h-48 w-48 p-4 '
+  src={message.img} alt="Uploaded" />}
+  
+  {/* Check if message.text is not an empty string and render it */}
+  {message.text !== "" && <p>{message.text}</p>}
+</div>
+
           <div className="time">
           <p className="text-gray-500 ml-2">{formattedTime}</p>
         </div>
