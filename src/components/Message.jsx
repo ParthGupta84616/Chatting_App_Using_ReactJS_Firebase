@@ -6,7 +6,16 @@ function Message({ message }) {
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
 
-  const bgWidth = `${message?.text?.length * 10 + 225}px`; 
+  const bgWidth = `${message?.text?.length * 10 + 250}px`; 
+  let t = message.date.seconds
+  const secondsSinceEpoch = t; 
+  const hours = Math.floor(secondsSinceEpoch / 3600) % 24; 
+  const minutes = Math.floor((secondsSinceEpoch % 3600) / 60);
+  const seconds = secondsSinceEpoch % 60;
+  const formattedHours = String(hours).padStart(2, '0');
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(seconds).padStart(2, '0');
+  const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 
   return (
     <>
@@ -28,10 +37,11 @@ function Message({ message }) {
           <div className="message">
             <p>{message?.text}</p> 
           </div>
+          <div className="time">
+          <p className="text-gray-500 ml-2">{formattedTime}</p>
         </div>
-        <div className="time">
-          <p className="text-gray-500 ml-2">Ajao Kal Milte he</p>
         </div>
+        
       </div>
     </>
   );
