@@ -35,12 +35,12 @@ function Chats() {
       {Object.entries(chats).sort((a, b) => b[1].date - a[1].date).map((chat) => (
         <div key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)} className="relative flex bg-slate-800 p-4 rounded-lg">
           <img
-            src={chat[1].userInfo?.photoURL || 'fallback_url'} // Add null check for photoURL
+            src={chat[1].userInfo?.photoURL || 'fallback_url'}
             alt="Avatar"
             className="w-16 h-16 rounded-full"
           />
           <div className="ml-5 text-12 text-white flex-col items-center">
-            <div className="font-bold">{chat[1].userInfo?.name}</div> {/* Add null check for name */}
+            <div className="font-bold">{chat[1].userInfo?.name}</div> 
             <div><p className='text-sm'>{chat[1].lastMessage?.text}</p></div>
           </div>
         </div>

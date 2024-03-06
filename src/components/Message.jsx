@@ -20,14 +20,11 @@ function Message({ message }) {
           />
         </div>
 
-          {/* User Name */}
           <div className="name">
             <h1 className="text-lg font-bold">
               {message?.senderId === currentUser?.uid ? currentUser.displayName : data.user?.name}
             </h1>
           </div>
-
-          {/* User message */}
           <div className="message">
             <p>{message?.text}</p> 
           </div>
