@@ -46,6 +46,7 @@ const Input = () => {
       setImg(null);
     } catch (error) {
       console.error("Error sending message:", error);
+      // Handle error
     }
   };
   
@@ -55,7 +56,9 @@ const Input = () => {
       senderId: currentUser.uid,
       date: Timestamp.now(),
     };
-  
+    if (text === "") {
+      messageData.text = "null";
+    }
     if (text !== "") {
       messageData.text = text;
     }
@@ -63,12 +66,12 @@ const Input = () => {
     if (img) {
       messageData.img = img;
     }
-    
   
     await updateDoc(doc(db, "chats", data.chatId), {
       messages: arrayUnion(messageData),
     });
   };
+
   
   const updateChatTimestamps = async (text) => {
     const messageUpdate = {

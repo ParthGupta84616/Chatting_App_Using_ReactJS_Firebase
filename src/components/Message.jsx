@@ -18,38 +18,34 @@ function Message({ message }) {
   const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 
   return (
-    <>
-      <div className="bg-slate-600 border-b border-gray-200 border-2 rounded-2xl m-2" style={{ width: bgWidth }}>
-        <div className="flex items-center space-x-4">
+    <>{message.text === "null" ? <p></p> :
+    <div className="bg-slate-600 border-b border-gray-200 border-2 rounded-2xl m-2" style={{ width: bgWidth }}>
+      <div className="flex items-center space-x-4">
         <div className="avatar">
           <img 
-           src={message?.senderId === currentUser?.uid ? currentUser?.photoURL : (data?.user?.photoURL || 'fallback_url')} 
+            src={message?.senderId === currentUser?.uid ? currentUser?.photoURL : (data?.user?.photoURL || 'fallback_url')} 
             alt="Avatar"
             className="rounded-full size-16 m-2"
           />
         </div>
-
-          <div className="name">
-            <h1 className="text-lg font-bold">
-              {message?.senderId === currentUser?.uid ? currentUser.displayName : data.user?.name}
-            </h1>
-          </div>
-          <div className="message">
-  {/* Check if message.img exists and render it */}
-  {message.img && <img
-  className='h-48 w-48 p-4 '
-  src={message.img} alt="Uploaded" />}
-  
-  {/* Check if message.text is not an empty string and render it */}
-  {message.text !== "" && <p>{message.text}</p>}
-</div>
-
-          <div className="time">
+        <div className="name">
+          <h1 className="text-lg font-bold">
+            {message?.senderId === currentUser?.uid ? currentUser.displayName : data.user?.name}
+          </h1>
+        </div>
+        <div className="message">
+          {message.img && <img
+            className='h-48 w-48 p-4 '
+            src={message.img} alt="Uploaded" />}
+          {message.text !== "" && <p>{message.text}</p>}
+        </div>
+        <div className="time">
           <p className="text-gray-500 ml-2">{formattedTime}</p>
         </div>
-        </div>
-        
       </div>
+    </div>
+  }
+  
     </>
   );
 }
