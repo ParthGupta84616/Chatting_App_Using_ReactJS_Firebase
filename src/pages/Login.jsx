@@ -22,7 +22,7 @@ function Login() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <div className="box p-8 bg-gray-800 rounded-lg shadow-lg text-center md:w-1/2 lg:w-1/3">
-        <div className="text-3xl font-bold text-white mb-4">Telugram</div>
+        <div className="text-3xl font-bold text-white mb-4">Temligram</div>
         <div className="text-xl font-semibold text-white mb-4">Login</div>
         <form onSubmit={handleSubmit}>
           <input

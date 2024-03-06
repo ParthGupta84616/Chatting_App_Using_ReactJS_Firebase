@@ -73,7 +73,7 @@ function Register() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <div className="box p-8 bg-gray-800 rounded-lg shadow-lg text-center md:w-1/2 lg:w-1/3">
-        <div className="text-3xl font-bold text-white mb-4">Telugram</div>
+        <div className="text-3xl font-bold text-white mb-4">Temligram</div>
         <div className="text-xl font-semibold text-white mb-4">Register</div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -114,9 +114,9 @@ function Register() {
               id="avatar"
               name="avatar"
               type="file"
-              className="hidden"
+              className="hidden "
             />
-            <label htmlFor="avatar" className="text-white absolute top-0 right-0 cursor-pointer"><img src={add} alt="" className="w-6 h-6" /></label>
+            <label htmlFor="avatar" className="text-white absolute  cursor-pointer"><img src={add} alt="" className="w-6 h-6 " /></label>
           </div>
           <button
             type="submit"

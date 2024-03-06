@@ -9,7 +9,7 @@ function Navbar() {
   return (
     <div className="flex flex-col md:flex-row items-center justify-between w-full h-1/6 bg-gray-800 rounded-xl">
       <div className="w-full md:w-1/4 p-4 text-center md:text-left">
-        <span className="text-lg font-bold"><strong>Telugram</strong></span>
+        <span className="text-lg font-bold"><strong>Temligram</strong></span>
       </div>
       <div className="w-full md:w-1/4 flex justify-center p-4">
         <img src={currentUser.photoURL} alt="Avatar" className="w-8 h-8 rounded-full" />
