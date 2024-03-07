@@ -19,6 +19,7 @@ const Input = () => {
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
 
+
   const handleSend = async () => {
     try {
       if (img) {
@@ -36,7 +37,7 @@ const Input = () => {
   
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
   
-        await sendMessage({ text, img: downloadURL });
+        await sendMessage({ text:"Photo Published", img: downloadURL });
       } else {
         await sendMessage({ text });
       }
@@ -71,6 +72,8 @@ const Input = () => {
       messages: arrayUnion(messageData),
     });
   };
+
+
 
   
   const updateChatTimestamps = async (text) => {
