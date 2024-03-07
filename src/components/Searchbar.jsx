@@ -83,7 +83,7 @@ function Searchbar() {
           <img
             src={user.photoURL}
             alt="Avatar"
-            className="w-16 h-16 rounded-full"
+            className="w-18 h-18 rounded-full"
           />
           <div className="ml-5 text-12 text-white flex items-center">
             <div className="font-bold">{user.name}</div>

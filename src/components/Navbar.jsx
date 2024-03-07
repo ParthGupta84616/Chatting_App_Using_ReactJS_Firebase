@@ -11,8 +11,8 @@ function Navbar() {
       <div className="w-full md:w-1/4 p-4 text-center md:text-left">
         <span className="text-lg font-bold"><strong>Temligram</strong></span>
       </div>
-      <div className="w-full md:w-1/4 flex justify-center p-4">
-        <img src={currentUser.photoURL} alt="Avatar" className="w-8 h-8 rounded-full" />
+      <div className="w-full ml-6 flex justify-center p-4">
+        <img src={currentUser.photoURL} alt="Avatar" className="w-16 h-16 rounded-full" />
       </div>
       <div className="w-full md:w-1/4 flex justify-center p-4">
         <span className="name">{currentUser.displayName}</span>
