@@ -11,12 +11,15 @@ function Searchbar() {
 
   const handleSearch = async () => {
     try {
-      const q = query(collection(db, 'user'), where('name', '==', username));
+      const q = query(collection(db, 'users'), where('name', '==', username));
+      console.log(q)
       const querySnapshot = await getDocs(q);
+      
 
       if (querySnapshot.empty) {
         setError(true);      
         setUser(null); 
+        console.log(username)
       } else {
         querySnapshot.forEach((doc) => {
           setUser(doc.data()); 
@@ -31,13 +34,14 @@ function Searchbar() {
 
   const handleKey = (e) => {
     if (e.code === 'Enter') {
+      console.log("Enter is been click");
       handleSearch();
     }
   };
   const handleSelect = async () => {
     const combinedID = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid;
     try {
-        const res = await getDoc(doc(db, 'Chats', combinedID)); // Corrected the usage of getDocs
+        const res = await getDoc(doc(db, 'chats', combinedID)); 
         if (!res.exists()) {
             await setDoc(doc(db, 'chats', combinedID), {
                 messages: []
@@ -79,13 +83,13 @@ function Searchbar() {
       />
       {error && <span>User Not Found!</span>}
       {user && (
-        <div className="flex bg-slate-800 p-4 rounded-lg " onClick={handleSelect}>
+        <div className="flex bg-slate-800 p-4 rounded-lg h-36 " onClick={handleSelect}>
           <img
             src={user.photoURL}
             alt="Avatar"
-            className="w-18 h-18 rounded-full"
+            className="w-18 h-18 rounded-full w-1/4"
           />
-          <div className="ml-5 text-12 text-white flex items-center">
+          <div className="ml-5 text-2xl text-white flex items-center ">
             <div className="font-bold">{user.name}</div>
           </div>
         </div>

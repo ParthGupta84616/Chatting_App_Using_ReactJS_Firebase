@@ -11,11 +11,9 @@ function Message({ message }) {
   const secondsSinceEpoch = t; 
   const hours = Math.floor(secondsSinceEpoch / 3600) % 24; 
   const minutes = Math.floor((secondsSinceEpoch % 3600) / 60);
-  const seconds = secondsSinceEpoch % 60;
   const formattedHours = String(hours).padStart(2, '0');
   const formattedMinutes = String(minutes).padStart(2, '0');
-  const formattedSeconds = String(seconds).padStart(2, '0');
-  const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  const formattedTime = `${formattedHours}:${formattedMinutes}`;
 
   return (
     <>{message.text === "null" ? <p></p> :

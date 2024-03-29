@@ -1,21 +1,22 @@
-
-import add from "../imgaes/Picture.png"
-import React from 'react';
+import add from "../imgaes/Picture.png";
+import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
 import { storage, db } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
-import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, Link } from 'react-router-dom';
 
 function Register() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const name = e.target[0].value;
-    const email = e.target[1].value;
-    const password = e.target[2].value;
-    const displayPicture = e.target[3].files[0];
+
+    const name = e.target.displayName.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const displayPicture = e.target.avatar.files[0];
 
     const auth = getAuth();
 
@@ -23,52 +24,39 @@ function Register() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      const storageRef = ref(storage, name);
+      const storageRef = ref(storage, `${user.uid}/${displayPicture.name}`);
 
       const uploadTask = uploadBytesResumable(storageRef, displayPicture);
-      uploadTask.on(
-        'state_changed',
+      
+      uploadTask.on('state_changed',
         (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-              break;
-            case 'running':
-              console.log('Upload is running');
-              break;
-            default:
-              break;
-          }
-          
+          // Handle upload progress if needed
         },
         (error) => {
           console.error('Upload error:', error);
+          setErrorMessage('Error uploading display picture.');
         },
         async () => {
-          console.log("hola");
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
           await updateProfile(user, {
             displayName: name,
             photoURL: downloadURL,
           });
-          await setDoc(doc(db, 'user', user.uid), {
+          await setDoc(doc(db, 'users', user.uid), {
             uid: user.uid,
             name,
             photoURL: downloadURL,
             email,
           });
           await setDoc(doc(db, 'userChats', user.uid), {});
-          console.log('User registration successful');
-          navigate('/'); // Navigate to the specified route
+          navigate('/');
         }
       );
     } catch (error) {
       console.error('Registration error:', error.message);
+      setErrorMessage(error.message);
     }
   };
-
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
@@ -114,10 +102,13 @@ function Register() {
               id="avatar"
               name="avatar"
               type="file"
-              className="hidden "
+              className="hidden"
             />
-            <label htmlFor="avatar" className="text-white absolute  cursor-pointer"><img src={add} alt="" className="w-6 h-6 " /></label>
+            <label htmlFor="avatar" className="text-white absolute cursor-pointer">
+              <img src={add} alt="" className="w-6 h-6" />
+            </label>
           </div>
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           <button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

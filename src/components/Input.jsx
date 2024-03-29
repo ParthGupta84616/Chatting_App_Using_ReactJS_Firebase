@@ -72,9 +72,6 @@ const Input = () => {
       messages: arrayUnion(messageData),
     });
   };
-
-
-
   
   const updateChatTimestamps = async (text) => {
     const messageUpdate = {
@@ -91,6 +88,13 @@ const Input = () => {
       updateDoc(doc(db, "userChats", data.user.uid), userChatsUpdate),
     ]);
   };
+  const handleKeyDown = (e) => {
+    if (e.code === 'Enter') {
+      console.log("Hola");
+      handleSend();
+    }
+  };
+  
   
     
   return (
@@ -100,6 +104,7 @@ const Input = () => {
         <div className="textInput">
           <input
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyDown}
             type="text"
             placeholder="Enter Your Text"
             className="border border-gray-300 rounded-md px-4 py-2 h-14 text-black text-xl focus:outline-none focus:border-blue-500"
@@ -137,6 +142,7 @@ const Input = () => {
             alt=""
             id="imageInput"
             onChange={(e) => setImg(e.target.files[0])}
+            
             className="hidden"
           />
           <label
@@ -157,6 +163,7 @@ const Input = () => {
         <div className="sendButton">
           <button
             onClick={handleSend}
+            
             className="bg-blue-500 h-14 w-20 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Send
